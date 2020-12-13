@@ -27,7 +27,7 @@ using namespace std;
 
 
 void green(int *f, int n) {
-  int maxstep = 1 << n; 
+  int maxstep = 1 << n;
     for (int step = 1; step < maxstep; step <<= 1) {
         int dubstep = step << 1;
         for (int i = 0; i < maxstep; i += dubstep) {
@@ -47,9 +47,9 @@ void walsh(unsigned int *f, int n, int *g, int i){
     for (int j = 0; j < msk; j++) {
         if (f[j] & (1 << i))
             g[j] = -1;
-         else 
+         else
             g[j] = 1;
-        
+
     }
 green(g, n);
 //for (int j = 0; j < msk; ++j)
@@ -111,8 +111,8 @@ int deg_i(unsigned int *f, int n, int i){
       w = weight_i(j);
       if (w > max) max = w;
     }
-    
-  
+
+
   }
   return max;
 }
@@ -122,16 +122,16 @@ void mobius(unsigned int *f, int n){
   int msk = 1 << n;
   for (int size = 1; size < msk; size <<= 1)
   {
-    //cout << "s= " << size << endl; 
+    //cout << "s= " << size << endl;
 
     for (int j = 0; j < msk; j += (size << 1))
     {
-      //cout << "j= " << j << endl; 
+      //cout << "j= " << j << endl;
 
       for (int i = j; i < (size + j); i++)
       {
-        //cout << "i= " << i << endl; 
-        
+        //cout << "i= " << i << endl;
+
         f[i + size] ^= f[i];
       }
     }
@@ -153,7 +153,7 @@ int kolvosperem(unsigned int *f, int i, int n){
   }
   //cout << "dis =" << dis << endl;
   return weight_i(dis);
- 
+
 }
 
 
@@ -169,7 +169,7 @@ return a;
 }
 
 int out2(unsigned int x, int n, ofstream& fout){
-  
+
   int mask = 1 << (n - 1);
   while (mask){
     if (x & mask) fout << '1';
@@ -177,22 +177,22 @@ int out2(unsigned int x, int n, ofstream& fout){
       mask >>= 1;
   }
   fout << endl;
-  
+
 }
 
 int outFunc(unsigned int *x, int n, ofstream& fout){
   //ofstream fut("ogrf.txt");
   int msk = 1 << n;
-  
+
   for (int i = 0; i < msk; ++i){
-  out2(x[i], n, fout);  
+  out2(x[i], n, fout);
   }
   //fut.close();
 }
 
 
 
-unsigned int * MobiusFunc(unsigned int *f, int n) { 
+unsigned int * MobiusFunc(unsigned int *f, int n) {
   unsigned int l; //= 1 << n;
   unsigned int a;
 
@@ -218,12 +218,12 @@ unsigned int * MobiusFunc(unsigned int *f, int n) {
         for(int m = 0; m < l / (2*k); m++) { //len = 1 << n;
           for(int j = 2*k*m; j < 2*k*m+k; j++ ) {
             g[j + k] ^= g[j];
-            
+
           }
         }
       }
     }
-  
+
   //cout << "MobiusFunc:" << g;
   return g;
 }
@@ -246,12 +246,12 @@ unsigned int * random_k(int k) {
       //cout << "B:  " << B <<endl;
     if (k < 5) B[0] &= ((1 << s)-1);
     //cout << hex << B[0] <<endl;
-    
+
     dis = 0;
     for(int i = 0; i < l; i++) {
       for(int j = 0; j < s; j++) {
         if (B[i] & (1 << j)) {
-          dis |= ((i << 5) + j);  
+          dis |= ((i << 5) + j);
         }
       }
         //cout << "i:  " << i <<endl;
@@ -289,7 +289,7 @@ unsigned int * fict(unsigned int *f, int n, int i) {
   //BoolFunc g(n + 1);
   unsigned int *g = new unsigned int [m1];
   //cout << "g: " << g << endl;
-  if(i >= 5) { 
+  if(i >= 5) {
     r = 1 << (i - 5);
     for(k = b = 0; b < m1 ; b += 2*r) {
       //cout << "b " << b << endl;
@@ -324,7 +324,7 @@ unsigned int * make_g (int k, int n){
     a=b;
     //delete[] tmp;
   }
-  //cout << "b[0]"; 
+  //cout << "b[0]";
   //cout << hex << b[0]<< endl;
 return b;
 }
@@ -343,7 +343,7 @@ int msk = 1 << n;
 unsigned int a;
 unsigned int b;
 
-//F -тождественная подстановка 
+//F -тождественная подстановка
 
 for (int i = 0; i < msk; ++i)
 {
@@ -366,10 +366,10 @@ for (int i = 0; i < n; ++i)
   unsigned int buff = F[b];
       F[b] = F[a];
       F[a] = buff;
-    
+
   M |= 1 << a;
   M |= 1 << b;
-  
+
 }
 
 return 0;
@@ -395,14 +395,14 @@ for (int i = 0; i < m; ++i)
 //}
 //cout << "make" << endl;
 g = make_g(k-1, n);
-//cout << " g[0]" << hex << g[0] << endl; 
+//cout << " g[0]" << hex << g[0] << endl;
 
 
 for (int j = 0; j < m; ++j)
 {
   if (g[j >> 5] & (1 << (j%32)))
     F[j] |= (1 << n);
-  else 
+  else
     F[j+m] |= (1 << n);
 }
 }
@@ -418,7 +418,7 @@ unsigned int * create_g(int k, int n){
   {
     funcn1(F,i,k);
   }
-  
+
   return F;
 
 }
@@ -428,7 +428,7 @@ unsigned int * create_g(int k, int n){
 
 int main()
 {
-  
+
 srand(time(NULL));
 unsigned int *F;
 unsigned int *G;
@@ -437,17 +437,14 @@ int k;
 int d;
 //int* a;
 //a = new int [n];
+char file_name[10];
+cout << "Введите имя файла: ";
+cin >> file_name;
 
-char file_name[10]="1.txt";
-//cout << "Введите имя файла: ";
-//cin >> file_name;
-
-//cout << "Введите количество переменных: " << std::endl;
-//cin >> n;
-//cout << "Введите k: " << std::endl;
-//cin >> k;
-    n=9;
-    k=3;
+cout << "Введите количество переменных: " << std::endl;
+cin >> n;
+cout << "Введите k: " << std::endl;
+cin >> k;
 int msk = 1 << n;
 int mask = 2 * msk;
 //F = new unsigned int [msk];

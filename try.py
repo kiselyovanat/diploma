@@ -50,6 +50,39 @@ def find_similiar_rows(DDT_g,b,n):
             similiars.append(ej)
     return(similiars)
 
+def get_DDT_ai_xi(f,DDT_g,x):
+    n = f.input_size()
+    ncols = 1 << n
+    similiars = []
+    A = Matrix(ZZ, ncols, ncols)
+
+    for j in range(n):
+        ei = 1 << j
+        bi = []
+        for xi in x:
+            fi = f(xi)
+            b = fi^f(xi^ei)
+            A[ei, b] +=1
+            bi.append(b)
+        part = find_similiar_rows_bi(DDT_g,bi,n)
+        similiars.append(part)
+    # print(A)
+    return(A,similiars)
+
+def find_similiar_rows_bi(DDT_g,b,n):
+    similiars = []
+    for j in range(n):
+        ej = 1 << j
+        q = 0
+        for bi in b:
+            if DDT_g[ej,bi]:
+                q += 1
+        print('q = ' + str(q))
+        print('len b = ' + str(len(b)))
+        if q == len(b):
+            similiars.append(ej)
+    return(similiars)
+
 def get_permutation1(g,n):
     '''
     f=g(A(x+c))
@@ -84,25 +117,26 @@ n=3
 # file.close()
 # for i in range(0,len(g)):
 #     g[i]=int(g[i],2)
-# # print('function =')
-# # print(g)
+# print('function =')
+# print(g)
 g = [3,2,7,5,4,1,0,6]
+# g = [1, 0, 2, 7, 6, 5, 4, 3]
 # f = SBox([0,7,6,5,4,3,1,2])
 f = SBox(get_permutation1(g,n))
 g = SBox(g)
-print("g=")
-print(g)
-print("f=")
-print(f)
+print("g = " + str(g))
+print("f =" + str(f))
 
 ddt_g = g.difference_distribution_table()
 ddt_f = f.difference_distribution_table()
-# print('DDT_f=')
-# print(ddt_f)
+print('DDT_f=')
+print(ddt_f)
 print('DDT_g=')
 print(ddt_g)
-x = 3
-ddt_f_part_x,similiars = get_DDT_ai_x(f,ddt_g,x)
+# for i in range(2**n):
+x = [2,3]
+ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
+print('x = ' + str(x))
 print(ddt_f_part_x)
 print(similiars)
 print("-------")
