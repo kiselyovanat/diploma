@@ -32,14 +32,13 @@ def get_DDT_ai_x(f,DDT_g,x):
     ncols = 1 << n
     similiars = []
     A = Matrix(ZZ, ncols, ncols)
-    for xi in x:
-        fi = f(xi)
-        for j in range(n):
-            ei = 1 << j
-            b = fi^f(xi^ei)
-            A[ei, b] +=1
-            part = find_similiar_rows(DDT_g,b,n)
-            similiars.append(part)
+    fi = f(x)
+    for j in range(n):
+        ei = 1 << j
+        b = fi^f(x^ei)
+        A[ei, b] +=1
+        part = find_similiar_rows(DDT_g,b,n)
+        similiars.append(part)
     # print(A)
     return(A,similiars)
 
@@ -102,7 +101,7 @@ ddt_f = f.difference_distribution_table()
 # print(ddt_f)
 print('DDT_g=')
 print(ddt_g)
-x =[2,7]
+x = 3
 ddt_f_part_x,similiars = get_DDT_ai_x(f,ddt_g,x)
 print(ddt_f_part_x)
 print(similiars)
