@@ -66,8 +66,10 @@ def get_DDT_ai_xi(f,DDT_g,x):
             bi.append(b)
         part = find_similiar_rows_bi(DDT_g,bi,n)
         similiars.append(part)
-    # print(A)
-    return(A,similiars)
+    # print("before:")
+    # print(similiars)
+    similiars_final = del_copy(similiars)
+    return(A,similiars_final)
 
 def find_similiar_rows_bi(DDT_g,b,n):
     similiars = []
@@ -77,10 +79,29 @@ def find_similiar_rows_bi(DDT_g,b,n):
         for bi in b:
             if DDT_g[ej,bi]:
                 q += 1
-        print('q = ' + str(q))
-        print('len b = ' + str(len(b)))
         if q == len(b):
             similiars.append(ej)
+    return(similiars)
+
+def get_vec(number,n):
+    l = len(bin(number))
+    bin_number = bin(number)[2:l]
+    vec = [0]*n
+    j = n-1
+    for i in bin_number:
+        vec[n-len(bin_number)-j-1] = int(i)
+        j -=1
+    return vec
+
+def del_copy(similiars):
+    # print("hi!")
+    for i in similiars:
+        if len(i) == 1:
+            for j in similiars:
+                if (i[0] in j) & (i != j):
+                    j.remove(i[0])
+                    if len(j)==1:
+                        similiars = del_copy(similiars)
     return(similiars)
 
 def get_permutation1(g,n):
@@ -92,64 +113,56 @@ def get_permutation1(g,n):
     010
     c = 101
     '''
-    # V = VectorSpace(GF(2),n)
     # A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
-    # c = 5
-    # for i in range(2**n):
-    #     # f[i] = g[]
-    #     vec = vector([i^c])
-    #     print(A*vec)
+    A = Matrix([[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0],[0,0,0,0,1],[0,0,0,1,0]])
+    c = 26
+    f = [0]*(2**n)
+    for i in range(2**n):
+        x = i ^ c
+        bin_x = get_vec(x,n)
+        vec = vector(bin_x)
+        new_vec = A*vec
+        stri = ''
+        for j in new_vec:
+            stri+=str(j)
+        new_x=int(stri,2)
+        f[i] = g[new_x]
 
-    f = [0]*8
-    f[0] = g[6]
-    f[1] = g[2]
-    f[2] = g[7]
-    f[3] = g[3]
-    f[4] = g[4]
-    f[5] = g[0]
-    f[6] = g[5]
-    f[7] = g[1]
+    # print(A)
+    # print(c)
     return(f)
 #
-n=3
-# file = open('1','r')
-# g=file.read().splitlines()
-# file.close()
-# for i in range(0,len(g)):
-#     g[i]=int(g[i],2)
-# print('function =')
-# print(g)
-g = [3,2,7,5,4,1,0,6]
-# g = [1, 0, 2, 7, 6, 5, 4, 3]
+n=5
+file = open('1','r')
+g=file.read().splitlines()
+file.close()
+for i in range(0,len(g)):
+    g[i]=int(g[i],2)
+# g = [3,2,7,5,4,1,0,6]
+# f = get_permutation1(g,n)
+# g = [11, 5, 9, 6, 12, 14, 10, 13, 7, 4, 1, 0, 3, 2, 15, 8]
 # f = SBox([0,7,6,5,4,3,1,2])
 f = SBox(get_permutation1(g,n))
 g = SBox(g)
 print("g = " + str(g))
-print("f =" + str(f))
+print("f = " + str(f))
 
 ddt_g = g.difference_distribution_table()
-ddt_f = f.difference_distribution_table()
-print('DDT_f=')
-print(ddt_f)
-print('DDT_g=')
-print(ddt_g)
+# ddt_f = f.difference_distribution_table()
+# print('DDT_f=')
+# print(ddt_f)
+# print('DDT_g=')
+# print(ddt_g)
 # for i in range(2**n):
-x = [2,3]
+x = [3,20,29]
+
 ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
 print('x = ' + str(x))
-print(ddt_f_part_x)
+# print(ddt_f_part_x)
+# print("after:")
 print(similiars)
 print("-------")
-# print('DDT_ai_x=')
-# print(ddt_f_part_x)
 
 # ddt_g_part= get_DDT_ai(g)
 # print('DDT_ai=')
 # print(ddt_g_part)
-
-
-
-
-# print('function =')
-# print(g)
-#
