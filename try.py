@@ -114,8 +114,8 @@ def get_permutation1(g,n):
     c = 101
     '''
     # A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
-    A = Matrix([[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0],[0,0,0,0,1],[0,0,0,1,0]])
-    c = 26
+    A = Matrix([[0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1],[0,0,0,1,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,1,0,0,0,0,0]])
+    c = 109
     f = [0]*(2**n)
     for i in range(2**n):
         x = i ^ c
@@ -132,7 +132,7 @@ def get_permutation1(g,n):
     # print(c)
     return(f)
 #
-n=5
+n=8
 file = open('1','r')
 g=file.read().splitlines()
 file.close()
@@ -154,7 +154,7 @@ ddt_g = g.difference_distribution_table()
 # print('DDT_g=')
 # print(ddt_g)
 # for i in range(2**n):
-x = [3,20,29]
+x = [53,111,248]
 
 ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
 print('x = ' + str(x))
