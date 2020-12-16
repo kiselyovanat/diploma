@@ -114,8 +114,9 @@ def get_permutation1(g,n):
     c = 101
     '''
     # A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
-    A = Matrix([[0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1],[0,0,0,1,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,1,0,0,0,0,0]])
-    c = 109
+    A = Matrix([[0,0,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,0,0],
+    [0,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0]])
+    c = 1029
     f = [0]*(2**n)
     for i in range(2**n):
         x = i ^ c
@@ -132,7 +133,7 @@ def get_permutation1(g,n):
     # print(c)
     return(f)
 #
-n=8
+n=11
 file = open('1','r')
 g=file.read().splitlines()
 file.close()
@@ -144,8 +145,8 @@ for i in range(0,len(g)):
 # f = SBox([0,7,6,5,4,3,1,2])
 f = SBox(get_permutation1(g,n))
 g = SBox(g)
-print("g = " + str(g))
-print("f = " + str(f))
+# print("g = " + str(g))
+# print("f = " + str(f))
 
 ddt_g = g.difference_distribution_table()
 # ddt_f = f.difference_distribution_table()
@@ -154,10 +155,10 @@ ddt_g = g.difference_distribution_table()
 # print('DDT_g=')
 # print(ddt_g)
 # for i in range(2**n):
-x = [53,111,248]
+x = [4]
 
 ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
-print('x = ' + str(x))
+# print('x = ' + str(x))
 # print(ddt_f_part_x)
 # print("after:")
 print(similiars)
