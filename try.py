@@ -1,10 +1,9 @@
-import numpy as np
 import copy
+import random
 import sage.all
 from sage.matrix.constructor import Matrix
 from sage.rings.integer_ring import ZZ
 from sage.crypto.sbox import SBox
-from itertools import *
 from sage.modules.free_module_element import vector
 
 def get_comp_func(s,i):
@@ -104,6 +103,16 @@ def del_copy(similiars):
                         similiars = del_copy(similiars)
     return(similiars)
 
+# def mat(n):
+#     matr = []
+#     for i in range(n):
+#         a = 1 << i
+#         row = get_vec(a,n)
+#         matr.append(row)
+#     random.shuffle(matr)
+#     return(matr)
+
+
 def get_permutation1(g,n):
     '''
     f=g(A(x+c))
@@ -114,9 +123,10 @@ def get_permutation1(g,n):
     c = 101
     '''
     # A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
-    A = Matrix([[0,0,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,0,0],
-    [0,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0]])
-    c = 1029
+    # A = Matrix([[0,0,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,0,0],
+    # [0,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0]])
+    A = Matrix([[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]])
+    c = 2574
     f = [0]*(2**n)
     for i in range(2**n):
         x = i ^ c
@@ -133,7 +143,7 @@ def get_permutation1(g,n):
     # print(c)
     return(f)
 #
-n=11
+n=12
 file = open('1','r')
 g=file.read().splitlines()
 file.close()
@@ -155,8 +165,7 @@ ddt_g = g.difference_distribution_table()
 # print('DDT_g=')
 # print(ddt_g)
 # for i in range(2**n):
-x = [4]
-
+x = [9,125,912,3698]
 ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
 # print('x = ' + str(x))
 # print(ddt_f_part_x)
