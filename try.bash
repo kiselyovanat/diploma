@@ -1,6 +1,6 @@
 #!/bin/bash
-for i in {1..50}
+for i in {1..100}
 do
-echo "1 12" | ./krand
-python3 try.py >> test/alg/DDT_x_12_4_krand
+echo "1 7" | ./krand
+python3 newAttack.py >> test/newAttack/7_4_krand
 done

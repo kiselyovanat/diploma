@@ -21,5 +21,5 @@ def mat(n):
         matr.append(row)
     random.shuffle(matr)
     return(matr)
-
-print(mat(12))
+n = int(input())
+print(mat(n))

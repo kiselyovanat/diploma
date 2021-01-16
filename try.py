@@ -1,10 +1,10 @@
-import copy
 import random
 import sage.all
 from sage.matrix.constructor import Matrix
 from sage.rings.integer_ring import ZZ
 from sage.crypto.sbox import SBox
 from sage.modules.free_module_element import vector
+
 
 def get_comp_func(s,i):
     func_i = s.component_function(i)
@@ -50,6 +50,8 @@ def find_similiar_rows(DDT_g,b,n):
     return(similiars)
 
 def get_DDT_ai_xi(f,DDT_g,x):
+    print('----')
+    print(DDT_g)
     n = f.input_size()
     ncols = 1 << n
     similiars = []
@@ -63,8 +65,11 @@ def get_DDT_ai_xi(f,DDT_g,x):
             b = fi^f(xi^ei)
             A[ei, b] +=1
             bi.append(b)
+
         part = find_similiar_rows_bi(DDT_g,bi,n)
         similiars.append(part)
+    #     print('----')
+    #     print(A)
     # print("before:")
     # print(similiars)
     similiars_final = del_copy(similiars)
@@ -74,12 +79,14 @@ def find_similiar_rows_bi(DDT_g,b,n):
     similiars = []
     for j in range(n):
         ej = 1 << j
-        q = 0
-        for bi in b:
-            if DDT_g[ej,bi]:
-                q += 1
-        if q == len(b):
-            similiars.append(ej)
+        l = 0
+        while l < len(b) and DDT_g[ej,b[l]]:
+        # for bi in b:
+        #     if DDT_g[ej,bi]:
+            l+= 1
+        if l == len(b):
+            p = 1 << n-1-j
+            similiars.append(p)
     return(similiars)
 
 def get_vec(number,n):
@@ -93,7 +100,6 @@ def get_vec(number,n):
     return vec
 
 def del_copy(similiars):
-    # print("hi!")
     for i in similiars:
         if len(i) == 1:
             for j in similiars:
@@ -103,14 +109,14 @@ def del_copy(similiars):
                         similiars = del_copy(similiars)
     return(similiars)
 
-# def mat(n):
-#     matr = []
-#     for i in range(n):
-#         a = 1 << i
-#         row = get_vec(a,n)
-#         matr.append(row)
-#     random.shuffle(matr)
-#     return(matr)
+def mat(n):
+    matr = []
+    for i in range(n):
+        a = 1 << i
+        row = get_vec(a,n)
+        matr.append(row)
+    random.shuffle(matr)
+    return(matr)
 
 
 def get_permutation1(g,n):
@@ -122,11 +128,8 @@ def get_permutation1(g,n):
     010
     c = 101
     '''
-    # A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
-    # A = Matrix([[0,0,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,0,0],
-    # [0,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0]])
-    A = Matrix([[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]])
-    c = 2574
+    A = Matrix([[0,0,1],[1,0,0],[0,1,0]])
+    c = 5
     f = [0]*(2**n)
     for i in range(2**n):
         x = i ^ c
@@ -138,40 +141,51 @@ def get_permutation1(g,n):
             stri+=str(j)
         new_x=int(stri,2)
         f[i] = g[new_x]
-
-    # print(A)
+    print('A =')
+    print(A)
     # print(c)
     return(f)
+
 #
-n=12
+n=3
 file = open('1','r')
 g=file.read().splitlines()
 file.close()
 for i in range(0,len(g)):
     g[i]=int(g[i],2)
-# g = [3,2,7,5,4,1,0,6]
-# f = get_permutation1(g,n)
+# g = [3,7,5,6,2,0,4,1]
+# f = [7,6,2,4,5,1,0,3]
+# g= [0, 3, 6, 1, 4, 13, 2, 7, 8, 9, 10, 11, 12, 5, 15, 14]
+g = [3,2,7,5,4,1,0,6]
+f = get_permutation1(g,n)
 # g = [11, 5, 9, 6, 12, 14, 10, 13, 7, 4, 1, 0, 3, 2, 15, 8]
 # f = SBox([0,7,6,5,4,3,1,2])
-f = SBox(get_permutation1(g,n))
-g = SBox(g)
-# print("g = " + str(g))
-# print("f = " + str(f))
 
+f = SBox(f)
+g = SBox(g)
 ddt_g = g.difference_distribution_table()
 # ddt_f = f.difference_distribution_table()
-# print('DDT_f=')
-# print(ddt_f)
-# print('DDT_g=')
-# print(ddt_g)
-# for i in range(2**n):
-x = [9,125,912,3698]
+print("g = " + str(g))
+print('DDT_g=')
+print(ddt_g)
+print("f = " + str(f))
+print('DDT_f=')
+print(ddt_f)
+
+
+# unic(ddt_f)
+#
+#
+# # for i in range(2**n):
+x = [5]
 ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
 # print('x = ' + str(x))
-# print(ddt_f_part_x)
-# print("after:")
+# # print(ddt_f_part_x)
+# # # print("after:")
 print(similiars)
 print("-------")
+
+
 
 # ddt_g_part= get_DDT_ai(g)
 # print('DDT_ai=')

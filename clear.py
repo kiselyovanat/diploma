@@ -100,18 +100,19 @@ def get_permutation1(g,n):
 
 
 n=3
-file = open('1','r')
-g=file.read().splitlines()
-file.close()
-for i in range(0,len(g)):
-    g[i]=int(g[i],2)
-f = SBox(get_permutation1(g,n))
-g = SBox(g)
-ddt_g = difference_distribution_table(g)
-x = [5]
-ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
-print(similiars)
+# file = open('1','r')
+# g=file.read().splitlines()
+# file.close()
+# for i in range(0,len(g)):
+#     g[i]=int(g[i],2)
 
+f = SBox(get_permutation1(g,n))
+print(f)
+# g = SBox(g)
+# ddt_g = difference_distribution_table(g)
+# x = [5]
+# ddt_f_part_x,similiars = get_DDT_ai_xi(f,ddt_g,x)
+# print(similiars)
 
 
 
